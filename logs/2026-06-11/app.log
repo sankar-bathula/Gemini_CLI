@@ -1,0 +1,43 @@
+[E 260611 10:36:23 database:32] Error connecting to PostgreSQL: connection to server at "localhost" (::1), port 5432 failed: Connection refused (0x0000274D/10061)
+    	Is the server running on that host and accepting TCP/IP connections?
+    connection to server at "localhost" (127.0.0.1), port 5432 failed: Connection refused (0x0000274D/10061)
+    	Is the server running on that host and accepting TCP/IP connections?
+    
+[I 260611 10:36:23 websocket:55] WebSocket thread started.
+[I 260611 10:36:23 main:166] Bot started for SBIN-EQ. Waiting for ticks...
+[I 260611 10:36:24 websocket:26] WebSocket Connection Opened
+[W 260611 12:49:13 smartWebSocketV2:318] Attempting to resubscribe/reconnect (Attempt 1)...
+[I 260611 12:49:24 websocket:26] WebSocket Connection Opened
+[I 260611 13:20:50 main:172] Bot stopped by user.
+[E 260611 13:20:59 database:32] Error connecting to PostgreSQL: connection to server at "localhost" (::1), port 5432 failed: Connection refused (0x0000274D/10061)
+    	Is the server running on that host and accepting TCP/IP connections?
+    connection to server at "localhost" (127.0.0.1), port 5432 failed: Connection refused (0x0000274D/10061)
+    	Is the server running on that host and accepting TCP/IP connections?
+    
+[I 260611 13:21:00 websocket:55] WebSocket thread started.
+[I 260611 13:21:00 main:166] Bot started for SBIN-EQ. Waiting for ticks...
+[I 260611 13:21:01 websocket:26] WebSocket Connection Opened
+[W 260611 13:35:41 smartWebSocketV2:318] Attempting to resubscribe/reconnect (Attempt 1)...
+[I 260611 13:35:52 websocket:26] WebSocket Connection Opened
+[I 260611 15:04:14 main:172] Bot stopped by user.
+[E 260611 15:37:00 database:32] Error connecting to PostgreSQL: connection to server at "localhost" (::1), port 5432 failed: FATAL:  database "trading_db" does not exist
+    
+[I 260611 15:37:01 websocket:55] WebSocket thread started.
+[I 260611 15:37:01 main:166] Bot started for SBIN-EQ. Waiting for ticks...
+[I 260611 15:37:01 websocket:26] WebSocket Connection Opened
+[I 260611 15:45:37 main:172] Bot stopped by user.
+[I 260611 15:45:43 websocket:55] WebSocket thread started.
+[I 260611 15:45:43 main:166] Bot started for SBIN-EQ. Waiting for ticks...
+[I 260611 15:45:43 websocket:26] WebSocket Connection Opened
+[I 260611 16:02:56 main:172] Bot stopped by user.
+[I 260611 16:07:24 websocket:55] WebSocket thread started.
+[I 260611 16:07:24 main:166] Bot started for SBIN-EQ. Waiting for ticks...
+[I 260611 16:07:24 websocket:26] WebSocket Connection Opened
+[I 260611 16:15:19 main:172] Bot stopped by user.
+[I 260611 16:26:56 websocket:55] WebSocket thread started.
+[I 260611 16:26:56 main:166] Bot started for SBIN-EQ. Waiting for ticks...
+[I 260611 16:26:56 websocket:26] WebSocket Connection Opened
+[I 260611 16:27:51 main:172] Bot stopped by user.
+[E 260611 16:36:54 data_collector:21] Error fetching NIFTY Spot: 'SmartConnect' object has no attribute 'getLtpData'
+[E 260611 16:36:54 data_collector:21] Error fetching NIFTY Spot: 'SmartConnect' object has no attribute 'getLtpData'
+[E 260611 16:36:54 backtest_today_premium:120] Could not identify option strikes for backtest.

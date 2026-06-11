@@ -1,0 +1,29 @@
+[E 260610 20:10:07 smartWebSocketV2:303] Error occurred during WebSocket connection: module 'websocket' has no attribute 'WebSocketApp'
+[I 260610 20:10:07 websocket:55] WebSocket thread started.
+[I 260610 20:10:07 main:122] Bot started for SBIN-EQ. Waiting for ticks...
+[E 260610 20:10:09 smartWebSocketV2:212] Error occurred during subscribe: 'NoneType' object has no attribute 'send'
+[I 260610 20:15:51 websocket:55] WebSocket thread started.
+[I 260610 20:15:51 main:122] Bot started for SBIN-EQ. Waiting for ticks...
+[I 260610 20:15:51 websocket:26] WebSocket Connection Opened
+[E 260610 20:56:25 database:32] Error connecting to PostgreSQL: connection to server at "localhost" (::1), port 5432 failed: Connection refused (0x0000274D/10061)
+    	Is the server running on that host and accepting TCP/IP connections?
+    connection to server at "localhost" (127.0.0.1), port 5432 failed: Connection refused (0x0000274D/10061)
+    	Is the server running on that host and accepting TCP/IP connections?
+    
+[E 260610 20:59:32 database:32] Error connecting to PostgreSQL: connection to server at "localhost" (::1), port 5432 failed: Connection refused (0x0000274D/10061)
+    	Is the server running on that host and accepting TCP/IP connections?
+    connection to server at "localhost" (127.0.0.1), port 5432 failed: Connection refused (0x0000274D/10061)
+    	Is the server running on that host and accepting TCP/IP connections?
+    
+[I 260610 20:59:32 websocket:55] WebSocket thread started.
+[I 260610 20:59:32 main:166] Bot started for SBIN-EQ. Waiting for ticks...
+[I 260610 20:59:33 websocket:26] WebSocket Connection Opened
+[E 260610 21:01:40 database:32] Error connecting to PostgreSQL: connection to server at "localhost" (::1), port 5432 failed: Connection refused (0x0000274D/10061)
+    	Is the server running on that host and accepting TCP/IP connections?
+    connection to server at "localhost" (127.0.0.1), port 5432 failed: Connection refused (0x0000274D/10061)
+    	Is the server running on that host and accepting TCP/IP connections?
+    
+[I 260610 21:01:41 websocket:55] WebSocket thread started.
+[I 260610 21:01:41 main:166] Bot started for SBIN-EQ. Waiting for ticks...
+[I 260610 21:01:41 websocket:26] WebSocket Connection Opened
+[I 260610 21:02:15 main:172] Bot stopped by user.
