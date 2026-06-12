@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from app.master_strategy import NiftyMasterStrategy
+from app.master_strategy import NiftySMCStrategy
 from app.smc import SMC
 from logzero import logger
 
@@ -10,7 +10,7 @@ def run_yearly_backtest(csv_path="nifty_50_1year_five_minute.csv"):
     df['timestamp'] = pd.to_datetime(df['timestamp'])
     df.set_index('timestamp', inplace=True)
     
-    strategy = NiftyMasterStrategy(rr_ratio=3.0) # Aiming for 1:3 RR for the "Best" strategy
+    strategy = NiftySMCStrategy(rr_ratio=3.0) # Aiming for 1:3 RR for the "Best" strategy
     
     balance = 100000
     trades = []

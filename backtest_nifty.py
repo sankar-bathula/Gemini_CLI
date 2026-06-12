@@ -26,12 +26,16 @@ def run_nifty_backtest(days=360):
     
     logger.info(f"Fetching historical data for {symbol} ({days} days)...")
 
-    # 2. Fetch Data (15m, 5m, 1m)
-    # Note: Strategy uses these three timeframes for multi-timeframe analysis
+    # 2. Fetch Data (1H, 15m, 5m, 1m)
+    # Note: Strategy uses these timeframes for multi-timeframe analysis
+    df_1h = collector.get_historical_candles(exchange, symbol, token, "ONE_HOUR", from_date, to_date)
     df_15m = collector.get_historical_candles(exchange, symbol, token, "FIFTEEN_MINUTE", from_date, to_date)
     df_5m = collector.get_historical_candles(exchange, symbol, token, "FIVE_MINUTE", from_date, to_date)
     df_1m = collector.get_historical_candles(exchange, symbol, token, "ONE_MINUTE", from_date, to_date)
 
+    if df_1h is None or df_1h.empty:
+        logger.error("Could not fetch 1H data.")
+        return
     if df_15m is None or df_15m.empty:
         logger.error("Could not fetch 15m data.")
         return
@@ -43,7 +47,7 @@ def run_nifty_backtest(days=360):
         return
 
     # Process and align data
-    for df in [df_15m, df_5m, df_1m]:
+    for df in [df_1h, df_15m, df_5m, df_1m]:
         df['timestamp'] = pd.to_datetime(df['timestamp'])
         df.set_index('timestamp', inplace=True)
         # Ensure numeric columns
@@ -53,9 +57,9 @@ def run_nifty_backtest(days=360):
     logger.info(f"Data fetched successfully. 1m rows: {len(df_1m)}")
 
     # 3. Run Backtest Engine
-    # initial_balance is in virtual currency (points or rupees)
     engine = BacktestEngine(initial_balance=100000)
-    engine.run(df_15m, df_5m, df_1m)
+    # Note: We might need to update BacktestEngine to handle 1H data
+    engine.run(df_1h, df_15m, df_5m, df_1m)
 
 if __name__ == "__main__":
     # You can change the number of days here
