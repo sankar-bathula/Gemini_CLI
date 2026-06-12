@@ -15,15 +15,15 @@ class TrendAnalyzer:
     def calculate_indicators(self):
         """
         Calculate indicators for trend detection:
-        - EMA 20, 50, 200
+        - EMA 9, 21, 50
         - ADX (Average Directional Index)
         - SuperTrend
         """
         try:
             # 1. EMAs
-            self.df['ema_20'] = ta.ema(self.df['close'], length=20)
+            self.df['ema_9'] = ta.ema(self.df['close'], length=9)
+            self.df['ema_21'] = ta.ema(self.df['close'], length=21)
             self.df['ema_50'] = ta.ema(self.df['close'], length=50)
-            self.df['ema_200'] = ta.ema(self.df['close'], length=200)
 
             # 2. ADX (Trend Strength)
             adx = ta.adx(self.df['high'], self.df['low'], self.df['close'], length=14)
@@ -42,10 +42,10 @@ class TrendAnalyzer:
         """
         Determine if the market is BULLISH, BEARISH, or NEUTRAL.
         Logic:
-        - Bullish: Price > EMA 200 AND EMA 20 > EMA 50 AND SuperTrend is Bullish AND ADX > 20
-        - Bearish: Price < EMA 200 AND EMA 20 < EMA 50 AND SuperTrend is Bearish AND ADX > 20
+        - Bullish: Price > EMA 50 AND EMA 9 > EMA 21 AND SuperTrend is Bullish AND ADX > 20
+        - Bearish: Price < EMA 50 AND EMA 9 < EMA 21 AND SuperTrend is Bearish AND ADX > 20
         """
-        if len(self.df) < 200:
+        if len(self.df) < 50: # Reduced from 200 to 50 for earlier signaling
             return "NEUTRAL"
 
         last_row = self.df.iloc[-1]
@@ -54,15 +54,27 @@ class TrendAnalyzer:
         st_dir_col = 'SUPERTd_10_3.0'
         adx_col = 'ADX_14'
         
-        if st_dir_col not in last_row or adx_col not in last_row:
-            logger.warning(f"Required indicator columns {st_dir_col} or {adx_col} missing.")
-            return "NEUTRAL"
+        # Safe checks
+        is_adx_strong = last_row.get(adx_col, 0) > 20
+        is_st_bullish = last_row.get(st_dir_col, 0) == 1
+        is_st_bearish = last_row.get(st_dir_col, 0) == -1
+        
+        ema_9 = last_row.get('ema_9', last_row['close'])
+        ema_21 = last_row.get('ema_21', last_row['close'])
+        ema_50 = last_row.get('ema_50', last_row['close']) 
 
-        is_adx_strong = last_row[adx_col] > 20
-        is_ema_bullish = (last_row['close'] > last_row['ema_200']) and (last_row['ema_20'] > last_row['ema_50'])
-        is_ema_bearish = (last_row['close'] < last_row['ema_200']) and (last_row['ema_20'] < last_row['ema_50'])
-        is_st_bullish = last_row[st_dir_col] == 1
-        is_st_bearish = last_row[st_dir_col] == -1
+        if pd.isna(ema_9): ema_9 = last_row['close']
+        if pd.isna(ema_21): ema_21 = last_row['close']
+        if pd.isna(ema_50): ema_50 = last_row['close']
+
+        is_ema_bullish = (last_row['close'] > ema_50) and (ema_9 > ema_21)
+        is_ema_bearish = (last_row['close'] < ema_50) and (ema_9 < ema_21)
+
+        # Require at least EMAs if ADX/ST are missing due to short history
+        if st_dir_col not in last_row:
+            if is_ema_bullish: return "BULLISH"
+            if is_ema_bearish: return "BEARISH"
+            return "NEUTRAL"
 
         if is_ema_bullish and is_st_bullish and is_adx_strong:
             return "BULLISH"

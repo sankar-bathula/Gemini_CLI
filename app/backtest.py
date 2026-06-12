@@ -12,46 +12,50 @@ class BacktestEngine:
         self.strategy = TradingStrategy()
         self.risk_manager = RiskManager()
 
-    def run(self, df_15m, df_5m, df_1m):
+    def run(self, df_1h, df_15m, df_5m, df_1m):
         """
         Runs the backtest by iterating through the 1m data and 
-        periodically updating 5m and 15m contexts.
+        periodically updating 5m, 15m and 1h contexts.
         """
         logger.info(f"Starting backtest with initial balance: {self.initial_balance}")
         
-        # Align data (Simplified: we assume df_1m is the master timeline)
-        # In a real backtest, we would ensure look-ahead bias is avoided by only
-        # showing the strategy data that would have been available at that specific 'now'.
-        
         active_trade = None
         
-        # We start from index 200 to ensure indicators are primed
-        for i in range(200, len(df_1m)):
+        # We start from index 500 to ensure indicators are primed
+        for i in range(500, len(df_1m)):
             current_time = df_1m.index[i]
             current_price = df_1m.iloc[i]['close']
             
             # 1. Manage Active Trade
             if active_trade:
                 # Check SL/TP
-                if (active_trade['side'] == 'BUY' and current_price <= active_trade['sl']) or \
-                   (active_trade['side'] == 'SELL' and current_price >= active_trade['sl']):
-                    self._close_trade(active_trade, current_price, current_time, "STOP_LOSS")
+                hit_sl = False
+                hit_tp = False
+                if active_trade['side'] == 'BUY':
+                    if current_price <= active_trade['sl']: hit_sl = True
+                    elif current_price >= active_trade['tp']: hit_tp = True
+                else:
+                    if current_price >= active_trade['sl']: hit_sl = True
+                    elif current_price <= active_trade['tp']: hit_tp = True
+
+                if hit_sl:
+                    self._close_trade(active_trade, active_trade['sl'], current_time, "STOP_LOSS")
                     active_trade = None
-                elif (active_trade['side'] == 'BUY' and current_price >= active_trade['tp']) or \
-                     (active_trade['side'] == 'SELL' and current_price <= active_trade['tp']):
-                    self._close_trade(active_trade, current_price, current_time, "TAKE_PROFIT")
+                elif hit_tp:
+                    self._close_trade(active_trade, active_trade['tp'], current_time, "TAKE_PROFIT")
                     active_trade = None
-                continue # Only one active trade for simplicity
+                continue 
 
             # 2. Get available data slices (avoiding look-ahead bias)
             hist_1m = df_1m.iloc[:i+1].tail(500)
             hist_5m = df_5m[df_5m.index <= current_time].tail(200)
             hist_15m = df_15m[df_15m.index <= current_time].tail(200)
+            hist_1h = df_1h[df_1h.index <= current_time].tail(200)
 
-            if len(hist_15m) < 50: continue
+            if len(hist_15m) < 50 or len(hist_1h) < 20: continue
 
             # 3. Generate Signal
-            self.strategy.update_data(hist_15m, hist_5m, hist_1m)
+            self.strategy.update_data(hist_1h, hist_15m, hist_5m, hist_1m)
             signal = self.strategy.generate_signal()
 
             # 4. Execute Virtual Trade
